@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\UserDataCapture.cs" />
-    <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Models\UserDetailsCaptureModelDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
