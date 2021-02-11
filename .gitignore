@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/UserDetailsCaptureDB/dbo/Tables/tblUser_1.sql

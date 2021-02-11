@@ -58,17 +58,12 @@
 
                 model.Birthday = finalDateString;
 
-                CreateUser(model.Id, model.FirstName, model.LastName, model.Email,
+                int v = CreateUser(model.id, model.FirstName, model.LastName, model.Email,
                     model.Password, model.Country, model.Colour, model.Birthday, model.CellNumber, model.Comments);
                 
                 return RedirectToAction("Index");
             }
             return View();
-        }
-
-        private void CreateUser(object id, string firstName, string lastName, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
