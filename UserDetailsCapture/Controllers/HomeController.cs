@@ -58,7 +58,7 @@
 
                 model.Birthday = finalDateString;
 
-                CreateUser(model.I, model.FirstName, model.LastName, model.Email,
+                CreateUser(model.Id, model.FirstName, model.LastName, model.Email,
                     model.Password, model.Country, model.Colour, model.Birthday, model.CellNumber, model.Comments);
                 
                 return RedirectToAction("Index");
