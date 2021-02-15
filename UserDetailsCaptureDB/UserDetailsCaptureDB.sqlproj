@@ -62,6 +62,6 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\tblUser_1.sql" />
+    <Build Include="dbo\Tables\tblUser.sql" />
   </ItemGroup>
 </Project>
