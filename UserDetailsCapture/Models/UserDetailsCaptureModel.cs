@@ -8,19 +8,20 @@
     /// </summary>
     public class UserDetailsCaptureModel
     {
+        public string id { get; set; }
         /// <summary>
         /// Gets or sets the FirstName.
         /// </summary>
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "First Name Is Required")]
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the LastName.
         /// </summary>
         [Display(Name = "Surname")]
         [Required(ErrorMessage = "Surname Is Required")]
-        public string LastName { get; set; }
+        public string Surname { get; set; }
 
         /// <summary>
         /// Gets or sets the Email.
@@ -50,7 +51,7 @@
         /// Gets or sets the Colour.
         /// </summary>
         [Display(Name = "Favourite Colour")]
-        public string Colour { get; set; }
+        public string FavouriteColour { get; set; }
 
         /// <summary>
         /// Gets or sets the Country.
@@ -69,7 +70,7 @@
         /// </summary>
         [Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
         [DataType(DataType.PhoneNumber)]
-        public int CellNumber { get; set; }
+        public int CellphoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the Comments.
@@ -91,5 +92,10 @@
         /// Gets or sets the Year.
         /// </summary>
         public int Year { get; set; }
+
+        internal void Add(UserDetailsCaptureModel userDetailsCaptureModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

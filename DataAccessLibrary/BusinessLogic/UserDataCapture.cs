@@ -29,8 +29,10 @@
         /// <param name="cellNumber">The cellNumber<see cref="int"/>.</param>
         /// <param name="comments">The comments<see cref="string"/>.</param>
         /// <returns>The <see cref="int"/>.</returns>
-        public static int CreateUser(int Id, string firstName, string lastName, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
+        public static int CreateUser(string name, string surname, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
         {
+            int id = 0;
+
             if (string.IsNullOrEmpty(colour))
             {
                 colour = "none";
@@ -44,21 +46,19 @@
             {
                 UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
                 {
-                    ID = Id,
-                    FirstName = firstName,
-                    LastName = lastName,
+                    Name = name,
+                    Surname = surname,
                     Email = email,
                     Password = password,
                     Country = country,
-                    Colour = colour,
+                    FavouriteColour = colour,
                     Birthday = birthday,
-                    CellNumber = cellNumber,
+                    CellphoneNumber = cellNumber,
                     Comments = comments
                 };
 
                 string sql = @"INSERT INTO [UserDetailsCapture].[dbo].[tblUser]
-                             [id]                            (
-                            ,[Name]
+                             ([Name]
                             ,[Surname]
                             ,[Email]
                             ,[Password]
@@ -69,21 +69,21 @@
                             ,[Comments])
                           values 
                              (
-                               @Id
-                               @FirstName, 
-                               @LastName, 
-                               @Email, 
-                               @Password, 
-                               @Country, 
-                               @Colour, 
-                               @Birthday, 
-                               @CellNumber, 
-                               @Comments
-                             )";
+                               @Name 
+                               ,@Surname
+                               ,@Email
+                               ,@Password
+                               ,@Country
+                               ,@FavouriteColour
+                               ,@Birthday
+                               ,@CellphoneNumber
+                               ,@Comments
+                             ); SELECT SCOPE_IDENTITY()";
 
-                return SqlDataAccess.SaveData(sql, data);
+                Task<int> lastID = SqlDataAccess.SaveDataAsync(sql, data);
+                id = lastID.Result;
             }
-            return Id;
+            return id;
         }
 
         /// <summary>
@@ -91,15 +91,15 @@
         /// </summary>
         /// <param name="id">The id<see cref="int"/>.</param>
         /// <returns>The <see cref="int"/>.</returns>
-        public static int GetInertedID(int id)
+        public static int InertedID
         {
-            UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
+            get
             {
-                ID = id,
-            };
-
-            string sql = @"SELECT IDENT_CURRENT('tblUser');";
-            return int.Parse(SqlDataAccess.GetID(id, sql).ToString());
+                var id = 0;
+                string sql = @"SELECT IDENT_CURRENT('tblUser') AS '@id';";
+                id = SqlDataAccess.GetIDAsync<int>(sql);
+                return id;
+            }
         }
 
         /// <summary>
@@ -129,11 +129,10 @@
         /// The LoadUserDetails.
         /// </summary>
         /// <returns>The <see cref="List{UserDetailsCaptureModel}"/>.</returns>
-        public static List<UserDetailsCaptureModelDB> LoadUserDetails()
+        public static List<UserDetailsCaptureModelDB> LoadUserDetails(int id)
         {
             string sql = @"SELECT 
-                            [id]
-                           ,[Name]
+                            [Name]
                            ,[Surname]
                            ,[Email]
                            ,[Password]
@@ -142,78 +141,10 @@
                            ,[Birthday]
                            ,[CellphoneNumber]
                            ,[Comments]
-                         FROM [UserDetailsCapture].[dbo].[tblUser]";
+                         FROM [UserDetailsCapture].[dbo].[tblUser] WHERE id = '" + id + "'";
 
             List<UserDetailsCaptureModelDB> userDataCaptures = SqlDataAccess.LoadData<UserDetailsCaptureModelDB>(sql).ToList();
             return userDataCaptures.ToList();
-        }
-
-        /// <summary>
-        /// Defines the <see cref="RestClient" />.
-        /// </summary>
-        public class RestClient
-        {
-            /// <summary>
-            /// Defines the client.
-            /// </summary>
-            private HttpClient client;
-
-            /// <summary>
-            /// Defines the ApiUri.
-            /// </summary>
-            public const string ApiUri = "http://localhost:49619/";
-
-            /// <summary>
-            /// Defines the MediaTypeJson.
-            /// </summary>
-            public const string MediaTypeJson = "application/json";
-
-            /// <summary>
-            /// Defines the RequestMsg.
-            /// </summary>
-            public const string RequestMsg = "Request has not been processed";
-
-            /// <summary>
-            /// Gets or sets the ReasonPhrase.
-            /// </summary>
-            public static string ReasonPhrase { get; set; }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="RestClient"/> class.
-            /// </summary>
-            public RestClient()
-            {
-                this.client = new HttpClient();
-                this.client.BaseAddress = new Uri(ApiUri);
-                this.client.DefaultRequestHeaders.Accept.Clear();
-                this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeJson));
-            }
-
-            /// <summary>
-            /// The RunAsyncGetAll.
-            /// </summary>
-            /// <typeparam name="T">.</typeparam>
-            /// <typeparam name="U">.</typeparam>
-            /// <param name="uri">The uri<see cref="dynamic"/>.</param>
-            /// <returns>The <see cref="Task{List{U}}"/>.</returns>
-            public async Task<List<U>> RunAsyncGetAll<T, U>(dynamic uri)
-            {
-                HttpResponseMessage response = await this.client.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    //return await response.Content.ReadAsAsync<List<U>>();
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    throw new ApplicationException(response.ReasonPhrase);
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.BadGateway)
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
-
-                throw new Exception(RequestMsg);
-            }
         }
     }
 }

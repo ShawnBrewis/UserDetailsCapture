@@ -22,7 +22,7 @@
                 defaults: new
                 {
                     controller = "Home",
-                    action = "Index",
+                    action = "UserDetails",
                     id = UrlParameter.Optional
                 }
             );
