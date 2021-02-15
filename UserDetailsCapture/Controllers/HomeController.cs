@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web.Mail;
-using System.Web.Mvc;
-
-using DataAccessLibrary.Models;
-
-using Microsoft.Ajax.Utilities;
-
-using UserDetailsCapture.Models;
-
-using static DataAccessLibrary.BusinessLogic.UserDataCapture;
-
-namespace UserDetailsCapture.Controllers
+﻿namespace UserDetailsCapture.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Mail;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
+
+    using DataAccessLibrary.Models;
+
+    using UserDetailsCapture.Models;
+
+    using static DataAccessLibrary.BusinessLogic.UserDataCapture;
+
     /// <summary>
     /// Defines the <see cref="HomeController" />.
     /// </summary>
@@ -47,7 +44,7 @@ namespace UserDetailsCapture.Controllers
                 // Get the birthday in the order we need to submit to SQL 
                 string strDate = users.Birthday.ToString();
                 string[] dateString = strDate.Split('/');
-               
+
                 foreach (var row in data)
                 {
                     try
@@ -172,7 +169,6 @@ namespace UserDetailsCapture.Controllers
                 return RedirectToAction("Sent");
             }
             return View();
-
         }
 
         /// <summary>

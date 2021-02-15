@@ -8,16 +8,20 @@
     /// </summary>
     public class UserDetailsCaptureModel
     {
-        public string id { get; set; }
         /// <summary>
-        /// Gets or sets the FirstName.
+        /// Gets or sets the id.
+        /// </summary>
+        public string id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Name.
         /// </summary>
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "First Name Is Required")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the LastName.
+        /// Gets or sets the Surname.
         /// </summary>
         [Display(Name = "Surname")]
         [Required(ErrorMessage = "Surname Is Required")]
@@ -48,7 +52,7 @@
         public string ConfirmPassword { get; set; }
 
         /// <summary>
-        /// Gets or sets the Colour.
+        /// Gets or sets the FavouriteColour.
         /// </summary>
         [Display(Name = "Favourite Colour")]
         public string FavouriteColour { get; set; }
@@ -66,7 +70,7 @@
         public DateTime Birthday { get; set; }
 
         /// <summary>
-        /// Gets or sets the CellNumber.
+        /// Gets or sets the CellphoneNumber.
         /// </summary>
         [Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
         [DataType(DataType.PhoneNumber)]
@@ -93,6 +97,10 @@
         /// </summary>
         public int Year { get; set; }
 
+        /// <summary>
+        /// The Add.
+        /// </summary>
+        /// <param name="userDetailsCaptureModel">The userDetailsCaptureModel<see cref="UserDetailsCaptureModel"/>.</param>
         internal void Add(UserDetailsCaptureModel userDetailsCaptureModel)
         {
             throw new NotImplementedException();
