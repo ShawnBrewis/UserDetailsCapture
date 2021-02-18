@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
@@ -16,19 +14,6 @@
     /// </summary>
     public class UserDataCapture
     {
-        /// <summary>
-        /// The CreateUser.
-        /// </summary>
-        /// <param name="firstName">The firstName<see cref="string"/>.</param>
-        /// <param name="lastName">The lastName<see cref="string"/>.</param>
-        /// <param name="email">The email<see cref="string"/>.</param>
-        /// <param name="password">The password<see cref="string"/>.</param>
-        /// <param name="country">The country<see cref="string"/>.</param>
-        /// <param name="colour">The colour<see cref="string"/>.</param>
-        /// <param name="birthday">The birthday<see cref="DateTime"/>.</param>
-        /// <param name="cellNumber">The cellNumber<see cref="int"/>.</param>
-        /// <param name="comments">The comments<see cref="string"/>.</param>
-        /// <returns>The <see cref="int"/>.</returns>
         public static int CreateUser(string name, string surname, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
         {
             int id = 0;
@@ -86,20 +71,51 @@
             return id;
         }
 
-        /// <summary>
-        /// The GetInertedID.
-        /// </summary>
-        /// <param name="id">The id<see cref="int"/>.</param>
         /// <returns>The <see cref="int"/>.</returns>
-        public static int InertedID
+        public static int UpdateUser(int id, string name, string surname, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
         {
-            get
+            if (string.IsNullOrEmpty(colour))
             {
-                var id = 0;
-                string sql = @"SELECT IDENT_CURRENT('tblUser') AS '@id';";
-                id = SqlDataAccess.GetIDAsync<int>(sql);
-                return id;
+                colour = "none";
             }
+            if (string.IsNullOrEmpty(comments))
+            {
+                comments = "none";
+            }
+            int rowsAffected = 0;
+            if (ValidatePassword(password))
+            {
+                UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
+                {
+                    Name = name,
+                    Surname = surname,
+                    Email = email,
+                    Password = password,
+                    Country = country,
+                    FavouriteColour = colour,
+                    Birthday = birthday,
+                    CellphoneNumber = cellNumber,
+                    Comments = comments
+                };
+               
+                  string sql = string.Format
+                    (@"UPDATE [UserDetailsCapture].[dbo].[tblUser]
+                       SET [Name] = '{0}'
+                          ,[Surname] = '{1}'
+                          ,[Email] = '{2}'
+                          ,[Password] = '{3}'
+                          ,[Country] = '{4}'
+                          ,[FavouriteColour] = '{5}'
+                          ,[Birthday] = '{6}'
+                          ,[CellphoneNumber] = '{7}'
+                          ,[Comments] = '{8}'
+                     WHERE id ='" + id + "'", data.Name, data.Surname, data.Email, data.Password, 
+                     data.Country, data.FavouriteColour, data.Birthday, data.CellphoneNumber, data.Comments);
+
+                rowsAffected = SqlDataAccess.UpdateData(sql, data);
+                
+            }
+            return rowsAffected;
         }
 
         /// <summary>
@@ -107,7 +123,7 @@
         /// </summary>
         /// <param name="password">The password<see cref="string"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        private static bool ValidatePassword(string password)
+        public static bool ValidatePassword(string password)
         {
             Regex hasNumber = new Regex(@"[0-9]+");
             Regex hasUpperChar = new Regex(@"[A-Z]+");
@@ -131,8 +147,9 @@
         /// <returns>The <see cref="List{UserDetailsCaptureModel}"/>.</returns>
         public static List<UserDetailsCaptureModelDB> LoadUserDetails(int id)
         {
-            string sql = @"SELECT 
-                            [Name]
+            string sql = @"SELECT
+                            [id]
+                           ,[Name]
                            ,[Surname]
                            ,[Email]
                            ,[Password]

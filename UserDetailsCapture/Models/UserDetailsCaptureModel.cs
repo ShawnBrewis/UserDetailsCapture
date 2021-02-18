@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.UI.WebControls;
 
     /// <summary>
     /// Defines the <see cref="UserDetailsCaptureModel" />.
@@ -11,7 +12,7 @@
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Name.
@@ -74,6 +75,7 @@
         /// </summary>
         [Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
         [DataType(DataType.PhoneNumber)]
+        [DisplayFormat(DataFormatString = "{0:###-###-####}")]
         public int CellphoneNumber { get; set; }
 
         /// <summary>
@@ -97,13 +99,8 @@
         /// </summary>
         public int Year { get; set; }
 
-        /// <summary>
-        /// The Add.
-        /// </summary>
-        /// <param name="userDetailsCaptureModel">The userDetailsCaptureModel<see cref="UserDetailsCaptureModel"/>.</param>
-        internal void Add(UserDetailsCaptureModel userDetailsCaptureModel)
-        {
-            throw new NotImplementedException();
-        }
+        public bool isUpdate { get; set; }
+
+
     }
 }

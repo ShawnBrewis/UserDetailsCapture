@@ -1,17 +1,16 @@
-﻿using System;
-
-namespace DataAccessLibrary.Models
+﻿namespace DataAccessLibrary.Models
 {
+    using System;
+
     /// <summary>
     /// Defines the <see cref="UserDetailsCaptureModelDB" />.
     /// </summary>
     public class UserDetailsCaptureModelDB
     {
-
         /// <summary>
         /// Gets or sets the ID.
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the FirstName.

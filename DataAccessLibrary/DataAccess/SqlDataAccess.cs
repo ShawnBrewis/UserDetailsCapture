@@ -54,27 +54,12 @@
             }
         }
 
-        /// <summary>
-        /// The GetID.
-        /// </summary>
-        /// <typeparam name="T">.</typeparam>
-        /// <param name="sql">The sql<see cref="string"/>.</param>
-        /// <param name="data">The data<see cref="T"/>.</param>
-        /// <returns>The <see cref="int"/>.</returns>
-        public static int GetIDAsync<T>(string sql)
+        public static int UpdateData<T>(string sql, T data)
         {
             using (IDbConnection connection = new SqlConnection(GetConnection()))
             {
-                return int.Parse(connection.ExecuteScalar<T>(sql).ToString());
+                return connection.Execute(sql, data);
             }
         }
-
-        //internal static int GetID(string sql)
-        //{
-        //    using (IDbConnection connection = new SqlConnection(GetConnection()))
-        //    {
-        //        return connection.Execute(sql);
-        //    }
-        //}
     }
 }
