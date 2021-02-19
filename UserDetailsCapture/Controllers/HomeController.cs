@@ -23,6 +23,7 @@
         /// <summary>
         /// The Index.
         /// </summary>
+        /// <param name="userAction">The userAction<see cref="string"/>.</param>
         /// <returns>The <see cref="ActionResult"/>.</returns>
         public ActionResult Index(string userAction)
         {
@@ -30,7 +31,6 @@
             {
                 ViewBag.SubmitValue = "Save";
             }
-
             else if (userAction == "Update")
             {
                 ViewBag.SubmitValue = "Update";
@@ -44,12 +44,16 @@
         }
 
         // Controller
+        /// <summary>
+        /// The Index.
+        /// </summary>
+        /// <param name="collection">The collection<see cref="FormCollection"/>.</param>
+        /// <returns>The <see cref="ActionResult"/>.</returns>
         [HttpPost]
         public ActionResult Index(FormCollection collection)
         {
-
             return Index(collection);
-        } // 
+        }
 
         /// <summary>
         /// The UserDetails.
@@ -64,7 +68,7 @@
                 List<UserDetailsCaptureModelDB> data = LoadUserDetails(id).ToList();
 
                 // int id = (int)RouteData.Values["id"];
-                // Get the birthday in the order we need to submit to SQL 
+                // Get the birthday in the order we need to submit to SQL
                 string strDate = data[0].Birthday.ToString();
                 string[] dateString = strDate.Split('/');
 
@@ -151,6 +155,10 @@
             return View();
         }
 
+        /// <summary>
+        /// The Update.
+        /// </summary>
+        /// <returns>The <see cref="ActionResult"/>.</returns>
         public ActionResult Update()
         {
             return View();
@@ -167,7 +175,6 @@
         {
             List<string> emailCheck = ValidateEmail(model.Email).ToList();
 
-
             if (ValidatePassword(model.Password))
             {
                 ModelState.AddModelError("Password", "The password does not meet the requirements");
@@ -176,7 +183,7 @@
 
             if (ModelState.IsValid)
             {
-                // Get the birthday in the order we need to submit to SQL 
+                // Get the birthday in the order we need to submit to SQL
                 string strDate = model.Day + "/" + model.Month + "/" + model.Year;
                 string[] dateString = strDate.Split('/');
 
@@ -205,7 +212,6 @@
                         return RedirectToAction("Update");
                     }
                 }
-
                 else
                 {
                     if (emailCheck.Count() > 0)
