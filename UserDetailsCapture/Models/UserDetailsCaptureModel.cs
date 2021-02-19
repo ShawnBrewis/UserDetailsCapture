@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.UI.WebControls;
 
     /// <summary>
     /// Defines the <see cref="UserDetailsCaptureModel" />.
@@ -9,7 +10,7 @@
     public class UserDetailsCaptureModel
     {
         /// <summary>
-        /// Gets or sets the Id.
+        /// Gets or sets the id.
         /// </summary>
         public string Id { get; set; }
 
@@ -72,6 +73,8 @@
         /// <summary>
         /// Gets or sets the CellphoneNumber.
         /// </summary>
+        //[Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
+        //[DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:###-###-####}")]
         public string CellphoneNumber { get; set; }
 
@@ -96,9 +99,8 @@
         /// </summary>
         public int Year { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether isUpdate.
-        /// </summary>
         public bool isUpdate { get; set; }
+
+
     }
 }
