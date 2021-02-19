@@ -7,7 +7,7 @@
     [Country]         VARCHAR (100)  NOT NULL,
     [FavouriteColour] VARCHAR (50)   NOT NULL,
     [Birthday]        DATE           NOT NULL,
-    [CellphoneNumber] INT            NOT NULL,
+    [CellphoneNumber] VARCHAR(50)            NOT NULL,
     [Comments]        VARCHAR (1000) NOT NULL,
     CONSTRAINT [PK_tblUser] PRIMARY KEY CLUSTERED ([id] ASC)
 );

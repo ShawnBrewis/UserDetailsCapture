@@ -50,7 +50,7 @@
         /// <summary>
         /// Gets or sets the CellNumber.
         /// </summary>
-        public int CellphoneNumber { get; set; }
+        public string CellphoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the Comments.
