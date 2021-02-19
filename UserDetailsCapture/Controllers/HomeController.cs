@@ -9,8 +9,6 @@
 
     using DataAccessLibrary.Models;
 
-    using PhoneNumbers;
-
     using UserDetailsCapture.Models;
 
     using static DataAccessLibrary.BusinessLogic.UserDataCapture;
@@ -165,42 +163,26 @@
         [ValidateAntiForgeryToken]
         public ActionResult UserDetails(UserDetailsCaptureModel model)
         {
-            List<string> emailCheck = ValidateEmail(model.Email).ToList();
-
-
-            if (ValidatePassword(model.Password))
-            {
-                ModelState.AddModelError("Password", "The password does not meet the requirements");
-                return View(model);
-            }
-
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && ValidatePassword(model.Password))
             {
                 // Get the birthday in the order we need to submit to SQL 
                 string strDate = model.Day + "/" + model.Month + "/" + model.Year;
                 string[] dateString = strDate.Split('/');
-
+                
                 DateTime finalDateString = Convert.ToDateTime(dateString[2] + "/" + dateString[1] + "/" + dateString[0]);
 
                 model.Birthday = finalDateString;
 
-                PhoneNumberUtil phoneUtil = PhoneNumberUtil.GetInstance();
-
-                PhoneNumber countryStyle = phoneUtil.Parse(model.CellphoneNumber.ToString(), "ZA");
-                string formattedPhone = phoneUtil.Format(countryStyle, PhoneNumberFormat.NATIONAL);
-
-                var test = PhoneNumberType.MOBILE;
-
                 if (Request.Params["id"] != null)
                 {
                     ViewBag.SubmitValue = "Update";
-
+                    int rowsAffected = 0;
                     int idToUpdate = int.Parse(Request.Params["id"]);
+                    
+                    rowsAffected = UpdateUser(idToUpdate, model.Name, model.Surname, model.Email,
+                    model.Password, model.Country, model.FavouriteColour, model.Birthday, model.CellphoneNumber, model.Comments);
 
-                    int rowsAffected = UpdateUser(idToUpdate, model.Name, model.Surname, model.Email, model.Password, model.Country,
-                        model.FavouriteColour, model.Birthday, formattedPhone, model.Comments);
-
-                    if (rowsAffected > 0)
+                    if(rowsAffected > 0)
                     {
                         return RedirectToAction("Update");
                     }
@@ -208,14 +190,8 @@
 
                 else
                 {
-                    if (emailCheck.Count() > 0)
-                    {
-                        ModelState.AddModelError("Email", "This email is already in use.");
-                        return View(model);
-                    }
-
                     int id = CreateUser(model.Name, model.Surname, model.Email,
-                    model.Password, model.Country, model.FavouriteColour, model.Birthday, formattedPhone, model.Comments);
+                    model.Password, model.Country, model.FavouriteColour, model.Birthday, model.CellphoneNumber, model.Comments);
 
                     SendEmail(model, id);
 

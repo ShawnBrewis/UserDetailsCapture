@@ -9,8 +9,8 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists
-   will truncate terms that are too long to fit in the left column
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -22,6 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
 
 /* Set width on the form input elements since they're 100% wide by default */
 /*input,
@@ -67,7 +68,7 @@ textarea {
     margin: 40px;
     background-color: rgb(68,68,68);*/ /* Needed for IEs */
 
-/*-moz-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+    /*-moz-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
     -webkit-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
     box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30);
@@ -77,6 +78,6 @@ textarea {
 
     .shadow1 .content {
         position: relative;*/ /* This protects the inner element from being blurred */
-/*padding: 100px;
+        /*padding: 100px;
         background-color: #DDD;
     }*/

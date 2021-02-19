@@ -73,10 +73,10 @@
         /// <summary>
         /// Gets or sets the CellphoneNumber.
         /// </summary>
-        //[Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
-        //[DataType(DataType.PhoneNumber)]
+        [Range(100000000, 999999999, ErrorMessage = "Cell Number must contain 10 numbers")]
+        [DataType(DataType.PhoneNumber)]
         [DisplayFormat(DataFormatString = "{0:###-###-####}")]
-        public string CellphoneNumber { get; set; }
+        public int CellphoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the Comments.

@@ -39,14 +39,6 @@
             }
         }
 
-        public static IEnumerable<T> CheckEmail<T>(string sql)
-        {
-            using (IDbConnection connection = new SqlConnection(GetConnection()))
-            {
-                return connection.Query<T>(sql);
-            }
-        }
-
         /// <summary>
         /// The SaveData.
         /// </summary>
