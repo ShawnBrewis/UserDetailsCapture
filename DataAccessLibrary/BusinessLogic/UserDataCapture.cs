@@ -14,10 +14,8 @@
     /// </summary>
     public class UserDataCapture
     {
-        public static int CreateUser(string name, string surname, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
+        public static int CreateUser(string name, string surname, string email, string password, string country, string colour, DateTime birthday, string cellNumber, string comments)
         {
-            int id = 0;
-
             if (string.IsNullOrEmpty(colour))
             {
                 colour = "none";
@@ -26,53 +24,50 @@
             {
                 comments = "none";
             }
-
-            if (ValidatePassword(password))
+            UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
             {
-                UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
-                {
-                    Name = name,
-                    Surname = surname,
-                    Email = email,
-                    Password = password,
-                    Country = country,
-                    FavouriteColour = colour,
-                    Birthday = birthday,
-                    CellphoneNumber = cellNumber,
-                    Comments = comments
-                };
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = password,
+                Country = country,
+                FavouriteColour = colour,
+                Birthday = birthday,
+                CellphoneNumber = cellNumber,
+                Comments = comments
+            };
 
-                string sql = @"INSERT INTO [UserDetailsCapture].[dbo].[tblUser]
-                             ([Name]
-                            ,[Surname]
-                            ,[Email]
-                            ,[Password]
-                            ,[Country]
-                            ,[FavouriteColour]
-                            ,[Birthday]
-                            ,[CellphoneNumber]
-                            ,[Comments])
-                          values 
-                             (
-                               @Name 
-                               ,@Surname
-                               ,@Email
-                               ,@Password
-                               ,@Country
-                               ,@FavouriteColour
-                               ,@Birthday
-                               ,@CellphoneNumber
-                               ,@Comments
-                             ); SELECT SCOPE_IDENTITY()";
+            string sql = @"INSERT INTO [UserDetailsCapture].[dbo].[tblUser]
+                                  ([Name]
+                                 ,[Surname]
+                                 ,[Email]
+                                 ,[Password]
+                                 ,[Country]
+                                 ,[FavouriteColour]
+                                 ,[Birthday]
+                                 ,[CellphoneNumber]
+                                 ,[Comments])
+                              values 
+                                 (
+                                   @Name 
+                                   ,@Surname
+                                   ,@Email
+                                   ,@Password
+                                   ,@Country
+                                   ,@FavouriteColour
+                                   ,@Birthday
+                                   ,@CellphoneNumber
+                                   ,@Comments
+                                 ); SELECT SCOPE_IDENTITY()";
 
-                Task<int> lastID = SqlDataAccess.SaveDataAsync(sql, data);
-                id = lastID.Result;
-            }
+            Task<int> lastID = SqlDataAccess.SaveDataAsync(sql, data);
+            
+            int id = lastID.Result;
             return id;
         }
 
         /// <returns>The <see cref="int"/>.</returns>
-        public static int UpdateUser(int id, string name, string surname, string email, string password, string country, string colour, DateTime birthday, int cellNumber, string comments)
+        public static int UpdateUser(int id, string name, string surname, string email, string password, string country, string colour, DateTime birthday, string cellNumber, string comments)
         {
             if (string.IsNullOrEmpty(colour))
             {
@@ -82,24 +77,22 @@
             {
                 comments = "none";
             }
-            int rowsAffected = 0;
-            if (ValidatePassword(password))
+
+            UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
             {
-                UserDetailsCaptureModelDB data = new UserDetailsCaptureModelDB
-                {
-                    Name = name,
-                    Surname = surname,
-                    Email = email,
-                    Password = password,
-                    Country = country,
-                    FavouriteColour = colour,
-                    Birthday = birthday,
-                    CellphoneNumber = cellNumber,
-                    Comments = comments
-                };
-               
-                  string sql = string.Format
-                    (@"UPDATE [UserDetailsCapture].[dbo].[tblUser]
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = password,
+                Country = country,
+                FavouriteColour = colour,
+                Birthday = birthday,
+                CellphoneNumber = cellNumber,
+                Comments = comments
+            };
+
+            string sql = string.Format
+              (@"UPDATE [UserDetailsCapture].[dbo].[tblUser]
                        SET [Name] = '{0}'
                           ,[Surname] = '{1}'
                           ,[Email] = '{2}'
@@ -109,12 +102,11 @@
                           ,[Birthday] = '{6}'
                           ,[CellphoneNumber] = '{7}'
                           ,[Comments] = '{8}'
-                     WHERE id ='" + id + "'", data.Name, data.Surname, data.Email, data.Password, 
-                     data.Country, data.FavouriteColour, data.Birthday, data.CellphoneNumber, data.Comments);
+                     WHERE id ='" + id + "'", data.Name, data.Surname, data.Email, data.Password,
+               data.Country, data.FavouriteColour, data.Birthday, data.CellphoneNumber, data.Comments);
 
-                rowsAffected = SqlDataAccess.UpdateData(sql, data);
-                
-            }
+            int rowsAffected = SqlDataAccess.UpdateData(sql, data);
+
             return rowsAffected;
         }
 
@@ -162,6 +154,15 @@
 
             List<UserDetailsCaptureModelDB> userDataCaptures = SqlDataAccess.LoadData<UserDetailsCaptureModelDB>(sql).ToList();
             return userDataCaptures.ToList();
+        }
+
+        public static IEnumerable<string> ValidateEmail(string email)
+        {
+            string sql = @"SELECT
+                           [Email]
+                         FROM [UserDetailsCapture].[dbo].[tblUser] WHERE [Email] = '" + email + "'";
+
+            return SqlDataAccess.CheckEmail<string>(sql);
         }
     }
 }
