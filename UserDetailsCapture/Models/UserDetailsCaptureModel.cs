@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.UI.WebControls;
 
     /// <summary>
     /// Defines the <see cref="UserDetailsCaptureModel" />.

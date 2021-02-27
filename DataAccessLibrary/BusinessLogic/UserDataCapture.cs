@@ -1,13 +1,13 @@
 ﻿namespace DataAccessLibrary.BusinessLogic
 {
+    using DataAccessLibrary.DataAccess;
+    using DataAccessLibrary.Models;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-
-    using DataAccessLibrary.DataAccess;
-    using DataAccessLibrary.Models;
 
     /// <summary>
     /// Defines the <see cref="UserDataCapture" />.
@@ -61,7 +61,7 @@
                                  ); SELECT SCOPE_IDENTITY()";
 
             Task<int> lastID = SqlDataAccess.SaveDataAsync(sql, data);
-            
+
             int id = lastID.Result;
             return id;
         }
